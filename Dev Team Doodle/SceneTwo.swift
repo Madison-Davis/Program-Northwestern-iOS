@@ -23,4 +23,11 @@ class SceneTwo: SKScene {
         starsBackground.position = CGPoint(x: 0, y: 0)
         addChild(starsBackground)
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let sceneOne = GameScene(fileNamed: "GameScene")
+        sceneOne?.scaleMode = .aspectFill
+        self.view?.presentScene(sceneOne!, transition: SKTransition.fade(withDuration: 0.15))
+    }
+    
 }
