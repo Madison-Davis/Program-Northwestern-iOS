@@ -17,6 +17,7 @@
 		E9251F3122D9034300EEC8EE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E9251F2F22D9034300EEC8EE /* LaunchScreen.storyboard */; };
 		E9251F3C22D9034300EEC8EE /* Dev_Team_DoodleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9251F3B22D9034300EEC8EE /* Dev_Team_DoodleTests.swift */; };
 		E9251F4722D9034300EEC8EE /* Dev_Team_DoodleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9251F4622D9034300EEC8EE /* Dev_Team_DoodleUITests.swift */; };
+		E9251F5522D9074C00EEC8EE /* SceneTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9251F5422D9074C00EEC8EE /* SceneTwo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		E9251F4222D9034300EEC8EE /* Dev Team DoodleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Dev Team DoodleUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9251F4622D9034300EEC8EE /* Dev_Team_DoodleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dev_Team_DoodleUITests.swift; sourceTree = "<group>"; };
 		E9251F4822D9034300EEC8EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E9251F5422D9074C00EEC8EE /* SceneTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneTwo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 				E9251F2222D9034200EEC8EE /* GameScene.sks */,
 				E9251F2422D9034200EEC8EE /* Actions.sks */,
 				E9251F2622D9034200EEC8EE /* GameScene.swift */,
+				E9251F5422D9074C00EEC8EE /* SceneTwo.swift */,
 				E9251F2822D9034200EEC8EE /* GameViewController.swift */,
 				E9251F2A22D9034200EEC8EE /* Main.storyboard */,
 				E9251F2D22D9034300EEC8EE /* Assets.xcassets */,
@@ -268,6 +271,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E9251F2722D9034200EEC8EE /* GameScene.swift in Sources */,
+				E9251F5522D9074C00EEC8EE /* SceneTwo.swift in Sources */,
 				E9251F2922D9034200EEC8EE /* GameViewController.swift in Sources */,
 				E9251F2122D9034200EEC8EE /* AppDelegate.swift in Sources */,
 			);
