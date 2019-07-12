@@ -13,6 +13,14 @@ import GameplayKit
 class SceneTwo: SKScene {
     
     override func didMove(to view: SKView) {
-        
-        }
+        createBackground()
+    }
+    
+    func createBackground() {
+        let stars = SKTexture(imageNamed: "stars")
+        let starsBackground = SKSpriteNode(texture: stars)
+        starsBackground.zPosition = -1
+        starsBackground.position = CGPoint(x: 0, y: 0)
+        addChild(starsBackground)
+    }
 }
