@@ -27,7 +27,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         character.physicsBody?.isDynamic = true
         character.physicsBody?.applyImpulse(CGVector(dx: 0, dy: -15))
     }
-
+    
     func createBackground() {
         let stars = SKTexture(imageNamed: "stars")
         let starsBackground = SKSpriteNode(texture: stars)
@@ -65,11 +65,11 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     func makeBricks() {
         
     }
-
+    
     func speedManager() {
         if let characterYSpeed = character.physicsBody?.velocity.dy {
-        if characterYSpeed >= CGFloat(800) {
-            character.physicsBody?.velocity.dy = CGFloat(800)
+            if characterYSpeed >= CGFloat(800) {
+                character.physicsBody?.velocity.dy = CGFloat(800)
             }
         }
     }
@@ -136,16 +136,13 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
             alert.addAction(UIAlertAction(title: "back", style: UIAlertAction.Style.default, handler: nil))
             self.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)
         }
-        
-
-        print(character.physicsBody?.velocity.dy)
         speedManager()
     }
-            func didBegin(_ contact: SKPhysicsContact) {
-                if contact.bodyA.node?.name == "character" ||
-                    contact.bodyB.node?.name == "character" {
-                    character.physicsBody?.velocity.dy = CGFloat(800)
-                    print("worked")
-                }
-            }
+    
+    func didBegin(_ contact: SKPhysicsContact) {
+        if contact.bodyA.node?.name == "character" ||
+            contact.bodyB.node?.name == "character" {
+            character.physicsBody?.velocity.dy = CGFloat(800)
+        }
+    }
 }
