@@ -28,10 +28,8 @@ class GameScene: SKScene {
         
         let sceneTwo = SceneTwo()
         sceneTwo.scaleMode = .resizeFill
-        self.view?.presentScene(sceneTwo, transition: SKTransition.fade(withDuration: 0))
-        
-       
-        
+        self.view!.presentScene(sceneTwo, transition: SKTransition.fade(withDuration: 0.15))
     }
-    
 }
+
+

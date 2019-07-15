@@ -26,8 +26,9 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     func createBackground() {
         let stars = SKTexture(imageNamed: "stars")
         let starsBackground = SKSpriteNode(texture: stars)
+        starsBackground.size = CGSize(width: 414.0, height: 896.0)
+        starsBackground.position = CGPoint(x: frame.midX, y: frame.midY)
         starsBackground.zPosition = -1
-        starsBackground.position = CGPoint(x: 0, y: 0)
         addChild(starsBackground)
     }
     
@@ -64,7 +65,6 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         // does not slow down over time
         character.physicsBody?.linearDamping = 0
         character.physicsBody?.contactTestBitMask = (character.physicsBody?.collisionBitMask)!
-        
         addChild(character) // add ball object to the view
     }
 }
