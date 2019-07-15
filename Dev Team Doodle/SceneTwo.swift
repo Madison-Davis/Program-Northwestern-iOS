@@ -26,6 +26,26 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         physicsWorld.contactDelegate = self
         character.physicsBody?.isDynamic = true
         character.physicsBody?.applyImpulse(CGVector(dx: 0, dy: -15))
+        
+        if character.position.y >= frame.midX {
+            //make a timer so that the bricks slowly go down, but do it later
+            print("OK")
+            //move down all the bricks
+            for brick in bricks {
+                var initialYPosition = brick.position.y
+                brick.position.y = initialYPosition - 40
+            }
+            //create new bricks
+            for _ in 1...(Int.random(in: 1...3)) {
+                brick = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 20))
+                brick.position = CGPoint(x: CGFloat.random(in: frame.minX...frame.maxX), y: CGFloat(frame.maxX - 50.0))
+                brick.name = "brick"
+                brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
+                brick.physicsBody?.isDynamic = false
+                bricks.append(brick)
+                addChild(brick)
+            }
+        }
     }
 
     func createBackground() {
@@ -41,7 +61,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         //make the base bricks
         for i in 1...7 {
             brick = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 20))
-            brick.position = CGPoint(x: 55 * (i-1) + Int(frame.minX) + 40, y: Int(frame.minY) + 150)
+            brick.position = CGPoint(x: 55 * (i-1) + Int(frame.minX) + 40, y: Int(frame.minY) + 50)
             brick.name = "brick"
             brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
             brick.physicsBody?.isDynamic = false
@@ -60,10 +80,6 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
                 addChild(brick)
             }
         }
-    }
-    
-    func makeBricks() {
-        
     }
     
     func speedManager() {
@@ -97,6 +113,8 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         character.physicsBody?.contactTestBitMask = (character.physicsBody?.collisionBitMask)!
         addChild(character) // add ball object to the view
     }
+    
+  
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
