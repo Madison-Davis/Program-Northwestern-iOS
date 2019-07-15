@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreMotion
 import SpriteKit
 import GameplayKit
 
@@ -14,6 +15,9 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     
     var brick = SKSpriteNode()
     var character = SKShapeNode()
+    var motionManager: CMMotionManager!
+    var previousGravity = SKPhysicsWorld()
+    var lastTouchPosition: CGPoint?
     
     override func didMove(to view: SKView) {
         createBackground()
@@ -66,5 +70,34 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         character.physicsBody?.linearDamping = 0
         character.physicsBody?.contactTestBitMask = (character.physicsBody?.collisionBitMask)!
         addChild(character) // add ball object to the view
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else { return }
+        let location = touch.location(in: self)
+        lastTouchPosition = location
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else { return }
+        let location = touch.location(in: self)
+        lastTouchPosition = location
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        lastTouchPosition = nil
+    }
+    
+    override func update(_ currentTime: TimeInterval) {
+        #if targetEnvironment(simulator)
+        if let currentTouch = lastTouchPosition {
+            let diff = CGPoint(x: currentTouch.x - character.position.x, y: currentTouch.y - character.position.y)
+            physicsWorld.gravity = CGVector(dx: diff.x / 100, dy: previousGravity.gravity.dy)
+        }
+        #else
+        if let accelerometerData = motionManager.accelerometerData {
+            physicsWorld.gravity = CGVector(dx: accelerometerData.acceleration.y * -50, dy: previousGravity.gravity.dy)
+        }
+        #endif
     }
 }
