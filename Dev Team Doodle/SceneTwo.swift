@@ -23,6 +23,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         createBackground()
         makeBaseBrick()
         makeCharacter()
+        physicsWorld.contactDelegate = self
         character.physicsBody?.isDynamic = true
         character.physicsBody?.applyImpulse(CGVector(dx: 0, dy: -15))
     }
@@ -117,7 +118,16 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
             alert.addAction(UIAlertAction(title: "back", style: UIAlertAction.Style.default, handler: nil))
             self.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)
         }
+        
+
         print(character.physicsBody?.velocity.dy)
         speedManager()
     }
+            func didBegin(_ contact: SKPhysicsContact) {
+                if contact.bodyA.node?.name == "character" ||
+                    contact.bodyB.node?.name == "character" {
+                    character.physicsBody?.velocity.dy = CGFloat(800)
+                    print("worked")
+                }
+            }
 }
