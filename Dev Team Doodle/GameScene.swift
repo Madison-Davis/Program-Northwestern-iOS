@@ -34,9 +34,13 @@ class GameScene: SKScene {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let sceneTwo = SceneTwo()
-        sceneTwo.scaleMode = .resizeFill
-        self.view!.presentScene(sceneTwo, transition: SKTransition.fade(withDuration: 0.15))
+        //for touch in touches {
+//            if playButton.contains(touch.location(in: SKScene)) {
+                let sceneTwo = SceneTwo()
+                sceneTwo.scaleMode = .resizeFill
+                self.view!.presentScene(sceneTwo, transition: SKTransition.fade(withDuration: 0.15))
+            //}
+        }
     }
 }
 
