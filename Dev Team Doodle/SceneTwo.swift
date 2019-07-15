@@ -38,7 +38,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     }
     
     func makeInitialBricks() {
-        //base bricks
+        //make the base bricks
         for i in 1...7 {
             brick = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 20))
             brick.position = CGPoint(x: 55 * (i-1) + Int(frame.minX) + 40, y: Int(frame.minY) + 150)
@@ -48,7 +48,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
             bricks.append(brick)
             addChild(brick)
         }
-        //bricks that start the character
+        //make the random bricks
         for i in 1...9 {
             for _ in 1...(Int.random(in: 1...3)) {
                 brick = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 20))
@@ -60,10 +60,6 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
                 addChild(brick)
             }
         }
-    }
-    
-    func makeBricks() {
-        
     }
 
     func speedManager() {
@@ -113,6 +109,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         lastTouchPosition = nil
     }
+    
     
     override func update(_ currentTime: TimeInterval) {
         #if targetEnvironment(simulator)
