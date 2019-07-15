@@ -99,5 +99,11 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
             physicsWorld.gravity = CGVector(dx: accelerometerData.acceleration.y * -50, dy: previousGravity.gravity.dy)
         }
         #endif
+        if character.position.x > frame.maxX {
+            character.position.x = frame.minX
+        }
+        else if character.position.x < frame.minX {
+            character.position.x = frame.maxX
+        }
     }
 }
