@@ -18,8 +18,9 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     override func didMove(to view: SKView) {
         createBackground()
         makeBaseBrick()
+        makeCharacter()
         character.physicsBody?.isDynamic = true
-        character.physicsBody?.applyImpulse(CGVector(dx: Int.random(in: -3...3), dy: 5))
+        character.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 5))
     }
 
     func createBackground() {
@@ -43,7 +44,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     
     func makeCharacter() {
         character = SKShapeNode(circleOfRadius: 10)
-        character.position = CGPoint(x: frame.midX, y: frame.midY)
+        character.position = CGPoint(x: frame.midX, y: frame.minY + 200)
         character.strokeColor = UIColor.black
         character.fillColor = UIColor.yellow
         character.name = "character"
