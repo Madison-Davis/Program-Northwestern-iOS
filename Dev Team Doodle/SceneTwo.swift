@@ -62,10 +62,6 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    func makeBricks() {
-        
-    }
-    
     func speedManager() {
         if let characterYSpeed = character.physicsBody?.velocity.dy {
             if characterYSpeed >= CGFloat(800) {
@@ -91,7 +87,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         // gravity is not a factor
         character.physicsBody?.affectedByGravity = true
         // bounces fully off of other objects
-        character.physicsBody?.restitution = 1
+        character.physicsBody?.restitution = 0
         // does not slow down over time
         character.physicsBody?.linearDamping = 0
         character.physicsBody?.contactTestBitMask = (character.physicsBody?.collisionBitMask)!
@@ -137,12 +133,28 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
             self.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)
         }
         speedManager()
+        if let characterYVelocity = character.physicsBody?.velocity.dy {
+            if characterYVelocity > CGFloat(0) {
+                for brick in bricks {
+                    brick.physicsBody = nil
+                }
+            } else {
+                for brick in bricks {
+                    brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
+                    brick.physicsBody?.isDynamic = false
+                }
+            }
+        }
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
-        if contact.bodyA.node?.name == "character" ||
-            contact.bodyB.node?.name == "character" {
-            character.physicsBody?.velocity.dy = CGFloat(800)
+        if let characterYVelocity = character.physicsBody?.velocity.dy {
+            if characterYVelocity >= CGFloat(0) {
+                if contact.bodyA.node?.name == "character" ||
+                    contact.bodyB.node?.name == "character" {
+                    character.physicsBody?.velocity.dy = CGFloat(800)
+                }
+            }
         }
     }
 }
