@@ -150,38 +150,39 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
             }
         }
         
-//        if character.position.y >= frame.midY {
-//            //make a timer so that the bricks slowly go down, but do it later
-//            //move down all the bricks
-//            if doOnce == 1 {
-//                for brick in bricks {
-//                    var initialYPosition = brick.position.y
-//                    brick.position.y = initialYPosition - 40
-//                }
-//                //create new bricks
-//                for _ in 1...(Int.random(in: 1...3)) {
-//                    brick = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 20))
-//                    brick.position = CGPoint(x: CGFloat.random(in: frame.minX...frame.maxX), y: CGFloat(frame.maxX - 50.0))
-//                    brick.name = "brick"
-//                    brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
-//                    brick.physicsBody?.isDynamic = false
-//                    bricks.append(brick)
-//                    addChild(brick)
-//                }
-//                doOnce = 0
-//            }
-//        }
-//        else {
-//            doOnce = 1
-//        }
-        
-        func didBegin(_ contact: SKPhysicsContact) {
-            if let characterYVelocity = character.physicsBody?.velocity.dy {
-                if characterYVelocity >= CGFloat(0) {
-                    if contact.bodyA.node?.name == "character" ||
-                        contact.bodyB.node?.name == "character" {
-                        character.physicsBody?.velocity.dy = CGFloat(800)
-                    }
+        if character.position.y > frame.midY && doOnce == 1 {
+            print("UGHHHHHH")
+            //make a timer so that the bricks slowly go down, but do it later
+            //move down all the bricks
+            for brick in bricks {
+                let initialYPosition = brick.position.y
+                brick.position.y = initialYPosition - 40
+            }
+            //create new bricks
+            for _ in 1...(Int.random(in: 1...3)) {
+                brick = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 20))
+                brick.position = CGPoint(x: CGFloat.random(in: frame.minX...frame.maxX), y: CGFloat(frame.maxY - 40.0))
+                brick.name = "brick"
+                brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
+                brick.physicsBody?.isDynamic = false
+                bricks.append(brick)
+                addChild(brick)
+            }
+            doOnce = doOnce + 1
+        }
+        else if character.position.y <= frame.midY {
+            doOnce = 1
+        }
+}
+    
+    
+    
+    func didBegin(_ contact: SKPhysicsContact) {
+        if let characterYVelocity = character.physicsBody?.velocity.dy {
+            if characterYVelocity >= CGFloat(0) {
+                if contact.bodyA.node?.name == "character" ||
+                    contact.bodyB.node?.name == "character" {
+                    character.physicsBody?.velocity.dy = CGFloat(800)
                 }
             }
         }
