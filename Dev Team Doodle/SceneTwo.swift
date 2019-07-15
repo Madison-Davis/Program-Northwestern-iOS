@@ -61,7 +61,6 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         character.strokeColor = UIColor.black
         character.fillColor = UIColor.yellow
         character.name = "character"
-        
         // physics shape matches ball image
         character.physicsBody = SKPhysicsBody(circleOfRadius: 10)
         // ignores all forces and impulses
@@ -112,6 +111,11 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         }
         else if character.position.x < frame.minX {
             character.position.x = frame.maxX
+        }
+        if character.position.y < frame.minY {
+            let alert = UIAlertController(title: "Game Over", message: "You lost! A ha ha.", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "back", style: UIAlertAction.Style.default, handler: nil))
+            self.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)
         }
         print(character.physicsBody?.velocity.dy)
         speedManager()
