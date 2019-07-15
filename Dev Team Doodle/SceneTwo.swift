@@ -24,7 +24,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         makeBaseBrick()
         makeCharacter()
         character.physicsBody?.isDynamic = true
-        character.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 5))
+        character.physicsBody?.applyImpulse(CGVector(dx: 0, dy: -15))
     }
 
     func createBackground() {
@@ -44,6 +44,14 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
             brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
             brick.physicsBody?.isDynamic = false
             addChild(brick)
+        }
+    }
+
+    func speedManager() {
+        if let characterYSpeed = character.physicsBody?.velocity.dy {
+        if characterYSpeed >= CGFloat(800) {
+            character.physicsBody?.velocity.dy = CGFloat(800)
+            }
         }
     }
     
@@ -105,5 +113,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         else if character.position.x < frame.minX {
             character.position.x = frame.maxX
         }
+        print(character.physicsBody?.velocity.dy)
+        speedManager()
     }
 }
