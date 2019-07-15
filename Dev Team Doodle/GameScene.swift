@@ -25,6 +25,8 @@ class GameScene: SKScene {
         label.backgroundColor = UIColor.yellow
         label.textColor = UIColor.black
         label.text = "Doodle Jump"
+    
+
         self.view?.addSubview(label)
     }
 
