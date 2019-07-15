@@ -12,6 +12,10 @@ import GameplayKit
 class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
+        makeTitleLabe()
+    }
+    
+    func makeTitleLabe() {
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 60))
         label.center = CGPoint(x: 205, y: 150)
         label.textAlignment = .center
@@ -20,10 +24,16 @@ class GameScene: SKScene {
         label.textColor = UIColor.black
         label.text = "Doodle Jump"
         self.view?.addSubview(label)
-        }
+    }
+    
+    func makePlayButton() {
+        let playButton = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
+        playButton.textAlignment = .center
+        playButton.text = "Play"
+        self.view?.addSubview(playButton)
+    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
         let sceneTwo = SceneTwo()
         sceneTwo.scaleMode = .resizeFill
         self.view!.presentScene(sceneTwo, transition: SKTransition.fade(withDuration: 0.15))
