@@ -18,6 +18,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     var motionManager: CMMotionManager!
     var previousGravity = SKPhysicsWorld()
     var lastTouchPosition: CGPoint?
+    var doOnce = 1
     
     override func didMove(to view: SKView) {
         createBackground()
@@ -26,28 +27,8 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         physicsWorld.contactDelegate = self
         character.physicsBody?.isDynamic = true
         character.physicsBody?.applyImpulse(CGVector(dx: 0, dy: -15))
-        
-        if character.position.y >= frame.midX {
-            //make a timer so that the bricks slowly go down, but do it later
-            print("OK")
-            //move down all the bricks
-            for brick in bricks {
-                var initialYPosition = brick.position.y
-                brick.position.y = initialYPosition - 40
-            }
-            //create new bricks
-            for _ in 1...(Int.random(in: 1...3)) {
-                brick = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 20))
-                brick.position = CGPoint(x: CGFloat.random(in: frame.minX...frame.maxX), y: CGFloat(frame.maxX - 50.0))
-                brick.name = "brick"
-                brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
-                brick.physicsBody?.isDynamic = false
-                bricks.append(brick)
-                addChild(brick)
-            }
-        }
     }
-
+    
     func createBackground() {
         let stars = SKTexture(imageNamed: "stars")
         let starsBackground = SKSpriteNode(texture: stars)
@@ -114,7 +95,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         addChild(character) // add ball object to the view
     }
     
-  
+    
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
@@ -168,14 +149,39 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
                 }
             }
         }
-    }
-    
-    func didBegin(_ contact: SKPhysicsContact) {
-        if let characterYVelocity = character.physicsBody?.velocity.dy {
-            if characterYVelocity >= CGFloat(0) {
-                if contact.bodyA.node?.name == "character" ||
-                    contact.bodyB.node?.name == "character" {
-                    character.physicsBody?.velocity.dy = CGFloat(800)
+        
+//        if character.position.y >= frame.midY {
+//            //make a timer so that the bricks slowly go down, but do it later
+//            //move down all the bricks
+//            if doOnce == 1 {
+//                for brick in bricks {
+//                    var initialYPosition = brick.position.y
+//                    brick.position.y = initialYPosition - 40
+//                }
+//                //create new bricks
+//                for _ in 1...(Int.random(in: 1...3)) {
+//                    brick = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 20))
+//                    brick.position = CGPoint(x: CGFloat.random(in: frame.minX...frame.maxX), y: CGFloat(frame.maxX - 50.0))
+//                    brick.name = "brick"
+//                    brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
+//                    brick.physicsBody?.isDynamic = false
+//                    bricks.append(brick)
+//                    addChild(brick)
+//                }
+//                doOnce = 0
+//            }
+//        }
+//        else {
+//            doOnce = 1
+//        }
+        
+        func didBegin(_ contact: SKPhysicsContact) {
+            if let characterYVelocity = character.physicsBody?.velocity.dy {
+                if characterYVelocity >= CGFloat(0) {
+                    if contact.bodyA.node?.name == "character" ||
+                        contact.bodyB.node?.name == "character" {
+                        character.physicsBody?.velocity.dy = CGFloat(800)
+                    }
                 }
             }
         }
