@@ -12,13 +12,15 @@ import GameplayKit
 class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 60))
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 290, height: 60))
         label.center = CGPoint(x: 205, y: 150)
         label.textAlignment = .center
         label.font = UIFont(name: "Marker Felt", size: 50.0)
         label.backgroundColor = UIColor.yellow
         label.textColor = UIColor.black
         label.text = "Doodle Jump"
+    
+
         self.view?.addSubview(label)
         }
     
