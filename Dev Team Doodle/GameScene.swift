@@ -23,6 +23,7 @@ class GameScene: SKScene {
         }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
         let sceneTwo = SceneTwo()
         sceneTwo.scaleMode = .resizeFill
         self.view!.presentScene(sceneTwo, transition: SKTransition.fade(withDuration: 0.15))
