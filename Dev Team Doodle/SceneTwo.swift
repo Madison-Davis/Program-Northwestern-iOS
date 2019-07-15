@@ -12,8 +12,8 @@ import SpriteKit
 import GameplayKit
 
 class SceneTwo: SKScene, SKPhysicsContactDelegate {
-    
     var brick = SKSpriteNode()
+    var bricks = [SKSpriteNode]()
     var character = SKShapeNode()
     var motionManager: CMMotionManager!
     var previousGravity = SKPhysicsWorld()
@@ -21,7 +21,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     
     override func didMove(to view: SKView) {
         createBackground()
-        makeBaseBrick()
+        makeInitialBricks()
         makeCharacter()
         character.physicsBody?.isDynamic = true
         character.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 5))
@@ -36,15 +36,33 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         addChild(starsBackground)
     }
     
-    func makeBaseBrick() {
+    func makeInitialBricks() {
+        //base bricks
         for i in 1...7 {
             brick = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 20))
             brick.position = CGPoint(x: 55 * (i-1) + Int(frame.minX) + 40, y: Int(frame.minY) + 150)
             brick.name = "brick"
             brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
             brick.physicsBody?.isDynamic = false
+            bricks.append(brick)
             addChild(brick)
         }
+        //bricks that start the character
+        for i in 1...9 {
+            for _ in 1...(Int.random(in: 1...3)) {
+                brick = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 20))
+                brick.position = CGPoint(x: CGFloat.random(in: frame.minX...frame.maxX), y: CGFloat(frame.minX + CGFloat((80 * i))))
+                brick.name = "brick"
+                brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
+                brick.physicsBody?.isDynamic = false
+                bricks.append(brick)
+                addChild(brick)
+            }
+        }
+    }
+    
+    func makeBricks() {
+        
     }
     
     func makeCharacter() {
