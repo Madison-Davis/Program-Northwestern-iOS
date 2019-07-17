@@ -19,6 +19,8 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     var previousGravity = SKPhysicsWorld()
     var lastTouchPosition: CGPoint?
     var counter = 1
+    var sceneOneVariable = GameScene()
+    var highScore = SKLabelNode()
     
     override func didMove(to view: SKView) {
         createBackground()
@@ -97,7 +99,17 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         addChild(character) // add ball object to the view
     }
     
+    func makeHighScoreLabel() {
+        
+    }
     
+    func switchToSceneOne() {
+        let sceneOne = GameScene()
+        sceneOne.scaleMode = .resizeFill
+        self.view!.presentScene(sceneOne, transition: SKTransition.fade(withDuration: 0.15))
+        sceneOneVariable.playButton.alpha = 1
+        sceneOneVariable.highScoreLabel.alpha = 1
+    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
