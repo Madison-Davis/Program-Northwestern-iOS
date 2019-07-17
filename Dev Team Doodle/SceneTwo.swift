@@ -134,7 +134,12 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         }
         if character.position.y < frame.minY {
             let alert = UIAlertController(title: "Game Over", message: "You lost! A ha ha.", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "back", style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: "Back", style: .default, handler: { (action) in
+                let sceneOne = GameScene()
+                sceneOne.scaleMode = .resizeFill
+                self.view!.presentScene(sceneOne, transition: SKTransition.fade(withDuration: 0.15))
+                self.sceneOneVariable.playButton.alpha = 0
+            }))
             self.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)
         }
         for brick in bricks {
