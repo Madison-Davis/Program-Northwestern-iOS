@@ -18,10 +18,6 @@ let highScoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 50))
         makeTitleLabe()
         makePlayButton()
         makeHighScore()
-        let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
-        backgroundImage.image = UIImage(named: "space")
-        backgroundImage.contentMode =  UIView.ContentMode.scaleAspectFill
-        self.view?.insertSubview(backgroundImage, at: 0)
     }
 
     func makeTitleLabe() {
