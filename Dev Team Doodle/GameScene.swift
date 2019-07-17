@@ -55,6 +55,5 @@ let highScoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 50))
         sceneTwo.scaleMode = .resizeFill
         self.view!.presentScene(sceneTwo, transition: SKTransition.fade(withDuration: 0.15))
         playButton.alpha = 0
-        highScoreLabel.alpha = 0
     }
 }
