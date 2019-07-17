@@ -18,9 +18,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     var motionManager: CMMotionManager!
     var previousGravity = SKPhysicsWorld()
     var lastTouchPosition: CGPoint?
-    var doOnce = true
-    var sceneOneVariable = GameScene()
-    var highScore = SKLabelNode()
+    var counter = 1
     
     override func didMove(to view: SKView) {
         createBackground()
@@ -45,25 +43,28 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         for i in 1...7 {
             brick = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 20))
             brick.position = CGPoint(x: 55 * (i-1) + Int(frame.minX) + 40, y: Int(frame.minY) + 50)
-            brick.name = "brick"
+            brick.name = "brick\(counter)"
             brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
             brick.physicsBody?.isDynamic = false
             bricks.append(brick)
             addChild(brick)
+            counter += 1
         }
         //make the random bricks
         for i in 1...9 {
             for _ in 1...(Int.random(in: 1...3)) {
                 brick = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 20))
                 brick.position = CGPoint(x: CGFloat.random(in: frame.minX...frame.maxX), y: CGFloat(frame.minX + CGFloat((80 * i))))
-                brick.name = "brick"
+                brick.name = "brick\(counter)"
                 brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
                 brick.physicsBody?.isDynamic = false
                 bricks.append(brick)
                 addChild(brick)
+                counter += 1
             }
         }
     }
+    
     func speedManager() {
         if let characterYSpeed = character.physicsBody?.velocity.dy {
             if characterYSpeed >= CGFloat(800) {
@@ -96,17 +97,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         addChild(character) // add ball object to the view
     }
     
-    func makeHighScoreLabel() {
-        
-    }
     
-    func switchToSceneOne() {
-        let sceneOne = GameScene()
-        sceneOne.scaleMode = .resizeFill
-        self.view!.presentScene(sceneOne, transition: SKTransition.fade(withDuration: 0.15))
-        sceneOneVariable.playButton.alpha = 1
-        sceneOneVariable.highScoreLabel.alpha = 1
-    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
@@ -143,13 +134,17 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
             character.position.x = frame.maxX
         }
         if character.position.y < frame.minY {
-            let alert = UIAlertController(title: "Game Over", message: "You lost! A ha ha.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Back", style: .default, handler: { (action) in
-                self.switchToSceneOne()
-            }))
+            let alert = UIAlertController(title: "Game Over", message: "You lost! A ha ha.", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "back", style: .default, handler: nil))
             self.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)
         }
-        
+        for brick in bricks {
+            if brick.position.y < frame.minY {
+                let index = bricks.firstIndex(of: brick)!
+                bricks.remove(at: index)
+                brick.removeFromParent()
+            }
+        }
         speedManager()
         if let characterYVelocity = character.physicsBody?.velocity.dy {
             if characterYVelocity > CGFloat(0) {
@@ -164,34 +159,16 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
             }
         }
         
-        func moveDownBricks() {
-            //move down bricks
+        if character.position.y > frame.midY {
+            let distance = character.position.y - frame.midY
+            character.position.y = frame.midY
+            //make a timer so that the bricks slowly go down, but do it later
+            //move down all the bricks
             for brick in bricks {
                 let initialYPosition = brick.position.y
-                brick.position.y = initialYPosition - 80
+                brick.position.y = initialYPosition - distance
             }
             //create new bricks
-            for _ in 1...(Int.random(in: 1...3)) {
-                brick = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 20))
-                brick.position = CGPoint(x: CGFloat.random(in: frame.minX...frame.maxX), y: CGFloat(frame.maxY - 80.0))
-                brick.name = "brick"
-                brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
-                brick.physicsBody?.isDynamic = false
-                bricks.append(brick)
-                addChild(brick)
-            }
-        }
-        
-        if character.position.y > frame.midY && doOnce == true {
-            moveDownBricks()
-            doOnce = false
-        }
-        else if character.position.y > frame.maxY - 80 && doOnce == true {
-            moveDownBricks()
-            doOnce = false
-        }
-        else if character.position.y <= frame.midY {
-            doOnce = true
         }
     }
     
@@ -201,6 +178,18 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
                 if contact.bodyA.node?.name == "character" ||
                     contact.bodyB.node?.name == "character" {
                     character.physicsBody?.velocity.dy = CGFloat(800)
+                    if character.position.y >= frame.midY - 100 {
+                        for _ in 0...(Int.random(in: 0...1)) {
+                            brick = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 20))
+                            brick.position = CGPoint(x: CGFloat.random(in: frame.minX...frame.maxX), y: CGFloat(frame.maxY - 40))
+                            brick.name = "brick\(counter)"
+                            brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
+                            brick.physicsBody?.isDynamic = false
+                            bricks.append(brick)
+                            addChild(brick)
+                            counter += 1
+                        }
+                    }
                 }
             }
         }
