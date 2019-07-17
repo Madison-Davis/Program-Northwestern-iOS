@@ -18,6 +18,10 @@ let highScoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 50))
         makeTitleLabe()
         makePlayButton()
         makeHighScore()
+        let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
+        backgroundImage.image = UIImage(named: "space")
+        backgroundImage.contentMode =  UIView.ContentMode.scaleAspectFill
+        self.view?.insertSubview(backgroundImage, at: 0)
     }
 
     func makeTitleLabe() {
@@ -26,12 +30,12 @@ let highScoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 50))
         label.font = UIFont(name: "Marker Felt", size: 50.0)
         label.backgroundColor = UIColor.yellow
         label.textColor = UIColor.black
-        label.text = "Doodle Jump"
+        label.text = "Space Jump"
         self.view?.addSubview(label)
     }
 
     func makePlayButton() {
-        playButton.center = CGPoint(x: 205, y: 500)
+        playButton.center = CGPoint(x: 205, y: 600)
         playButton.textAlignment = .center
         playButton.font = UIFont(name: "Marker Felt", size: 25.0)
         playButton.backgroundColor = UIColor.red
