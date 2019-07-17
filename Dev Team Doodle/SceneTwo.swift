@@ -85,7 +85,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         character.physicsBody?.usesPreciseCollisionDetection = true
         // no loss of energy from friction
         character.physicsBody?.friction = 0
-        // gravity is not a factor
+        // gravity is a factor
         character.physicsBody?.affectedByGravity = true
         // bounces fully off of other objects
         character.physicsBody?.restitution = 0
@@ -133,7 +133,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         }
         if character.position.y < frame.minY {
             let alert = UIAlertController(title: "Game Over", message: "You lost! A ha ha.", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "back", style: UIAlertAction.Style.default, handler: nil))
+            alert.addAction(UIAlertAction(title: "back", style: .default, handler: nil))
             self.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)
         }
         speedManager()
@@ -151,7 +151,6 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         }
         
         if character.position.y > frame.midY && doOnce == 1 {
-            print("UGHHHHHH")
             //make a timer so that the bricks slowly go down, but do it later
             //move down all the bricks
             for brick in bricks {
@@ -174,8 +173,6 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
             doOnce = 1
         }
 }
-    
-    
     
     func didBegin(_ contact: SKPhysicsContact) {
         if let characterYVelocity = character.physicsBody?.velocity.dy {
