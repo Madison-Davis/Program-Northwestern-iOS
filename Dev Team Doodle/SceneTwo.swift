@@ -20,6 +20,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     var lastTouchPosition: CGPoint?
     var counter = 1
     var sceneOneVariable = GameScene()
+    var distance: CGFloat = 0.0
     
     override func didMove(to view: SKView) {
         createBackground()
@@ -164,7 +165,8 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         }
         
         if character.position.y > frame.midY {
-            let distance = character.position.y - frame.midY
+            distance = character.position.y - frame.midY
+            let distanceInt = Int(distance)
             character.position.y = frame.midY
             //make a timer so that the bricks slowly go down, but do it later
             //move down all the bricks
@@ -172,16 +174,9 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
                 let initialYPosition = brick.position.y
                 brick.position.y = initialYPosition - distance
             }
-            //create new bricks
-        }
-        
-        if 1 == 1 {
-            let highScore = self.sceneOneVariable.highScoreLabel
-            highScore.alpha = 1
-            //for every time the distance changes () {
-            //let howFarCharacterHasMoved = distance
-            //self.highScore.text = "Score: " + howFarCharacterHasMoved
-            //}
+                let score = self.sceneOneVariable.highScoreLabel
+                score.alpha = 1
+                score.text = "Score: " + String(distanceInt)
         }
     }
     
