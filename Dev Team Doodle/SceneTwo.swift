@@ -18,7 +18,9 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     var motionManager: CMMotionManager!
     var previousGravity = SKPhysicsWorld()
     var lastTouchPosition: CGPoint?
-    var doOnce = 1
+    var doOnce = true
+    var sceneOneVariable = GameScene()
+    var highScore = SKLabelNode()
     
     override func didMove(to view: SKView) {
         createBackground()
@@ -62,7 +64,6 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
             }
         }
     }
-    
     func speedManager() {
         if let characterYSpeed = character.physicsBody?.velocity.dy {
             if characterYSpeed >= CGFloat(800) {
@@ -95,7 +96,17 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         addChild(character) // add ball object to the view
     }
     
+    func makeHighScoreLabel() {
+        
+    }
     
+    func switchToSceneOne() {
+        let sceneOne = GameScene()
+        sceneOne.scaleMode = .resizeFill
+        self.view!.presentScene(sceneOne, transition: SKTransition.fade(withDuration: 0.15))
+        sceneOneVariable.playButton.alpha = 1
+        sceneOneVariable.highScoreLabel.alpha = 1
+    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
@@ -132,10 +143,13 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
             character.position.x = frame.maxX
         }
         if character.position.y < frame.minY {
-            let alert = UIAlertController(title: "Game Over", message: "You lost! A ha ha.", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "back", style: .default, handler: nil))
+            let alert = UIAlertController(title: "Game Over", message: "You lost! A ha ha.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Back", style: .default, handler: { (action) in
+                self.switchToSceneOne()
+            }))
             self.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)
         }
+        
         speedManager()
         if let characterYVelocity = character.physicsBody?.velocity.dy {
             if characterYVelocity > CGFloat(0) {
@@ -150,29 +164,36 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
             }
         }
         
-        if character.position.y > frame.midY && doOnce == 1 {
-            //make a timer so that the bricks slowly go down, but do it later
-            //move down all the bricks
+        func moveDownBricks() {
+            //move down bricks
             for brick in bricks {
                 let initialYPosition = brick.position.y
-                brick.position.y = initialYPosition - 40
+                brick.position.y = initialYPosition - 80
             }
             //create new bricks
             for _ in 1...(Int.random(in: 1...3)) {
                 brick = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 20))
-                brick.position = CGPoint(x: CGFloat.random(in: frame.minX...frame.maxX), y: CGFloat(frame.maxY - 40.0))
+                brick.position = CGPoint(x: CGFloat.random(in: frame.minX...frame.maxX), y: CGFloat(frame.maxY - 80.0))
                 brick.name = "brick"
                 brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
                 brick.physicsBody?.isDynamic = false
                 bricks.append(brick)
                 addChild(brick)
             }
-            doOnce = doOnce + 1
+        }
+        
+        if character.position.y > frame.midY && doOnce == true {
+            moveDownBricks()
+            doOnce = false
+        }
+        else if character.position.y > frame.maxY - 80 && doOnce == true {
+            moveDownBricks()
+            doOnce = false
         }
         else if character.position.y <= frame.midY {
-            doOnce = 1
+            doOnce = true
         }
-}
+    }
     
     func didBegin(_ contact: SKPhysicsContact) {
         if let characterYVelocity = character.physicsBody?.velocity.dy {
