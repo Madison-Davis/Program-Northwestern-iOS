@@ -20,7 +20,6 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     var lastTouchPosition: CGPoint?
     var counter = 1
     var sceneOneVariable = GameScene()
-    var highScore = SKLabelNode()
     
     override func didMove(to view: SKView) {
         createBackground()
@@ -98,19 +97,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         character.physicsBody?.contactTestBitMask = (character.physicsBody?.collisionBitMask)!
         addChild(character) // add ball object to the view
     }
-    
-    func makeHighScoreLabel() {
-        
-    }
-    
-    func switchToSceneOne() {
-        let sceneOne = GameScene()
-        sceneOne.scaleMode = .resizeFill
-        self.view!.presentScene(sceneOne, transition: SKTransition.fade(withDuration: 0.15))
-        sceneOneVariable.playButton.alpha = 1
-        sceneOneVariable.highScoreLabel.alpha = 1
-    }
-    
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         let location = touch.location(in: self)
@@ -147,7 +134,12 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         }
         if character.position.y < frame.minY {
             let alert = UIAlertController(title: "Game Over", message: "You lost! A ha ha.", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "back", style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: "Back", style: .default, handler: { (action) in
+                let sceneOne = GameScene()
+                sceneOne.scaleMode = .resizeFill
+                self.view!.presentScene(sceneOne, transition: SKTransition.fade(withDuration: 0.15))
+                self.sceneOneVariable.playButton.alpha = 0
+            }))
             self.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)
         }
         for brick in bricks {
@@ -182,6 +174,15 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
             }
             //create new bricks
         }
+        
+        if 1 == 1 {
+            let highScore = self.sceneOneVariable.highScoreLabel
+            highScore.alpha = 1
+            //for every time the distance changes () {
+            //let howFarCharacterHasMoved = distance
+            //self.highScore.text = "Score: " + howFarCharacterHasMoved
+            //}
+        }
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
@@ -205,5 +206,13 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
                 }
             }
         }
+    }
+    
+    func switchToSceneOne() {
+        let sceneOne = GameScene()
+        sceneOne.scaleMode = .resizeFill
+        self.view!.presentScene(sceneOne, transition: SKTransition.fade(withDuration: 0.15))
+        sceneOneVariable.playButton.alpha = 1
+        sceneOneVariable.highScoreLabel.alpha = 1
     }
 }
