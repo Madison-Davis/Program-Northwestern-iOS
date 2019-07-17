@@ -12,7 +12,7 @@ import GameplayKit
 class GameScene: SKScene {
 let label = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 60))
 let playButton = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
-let highScoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 50))
+let highScoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 40))
     
     override func didMove(to view: SKView) {
         makeTitleLabe()
@@ -41,7 +41,7 @@ let highScoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 50))
     }
     
     func makeHighScore() {
-        highScoreLabel.center = CGPoint(x: 205, y: 300)
+        highScoreLabel.center = CGPoint(x: 210, y: 220)
         highScoreLabel.textAlignment = .center
         highScoreLabel.font = UIFont(name: "Marker Felt", size: 25.0)
         highScoreLabel.backgroundColor = UIColor.orange
@@ -55,6 +55,5 @@ let highScoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 50))
         sceneTwo.scaleMode = .resizeFill
         self.view!.presentScene(sceneTwo, transition: SKTransition.fade(withDuration: 0.15))
         playButton.alpha = 0
-        highScoreLabel.alpha = 0
     }
 }

@@ -20,7 +20,6 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     var lastTouchPosition: CGPoint?
     var doOnce = true
     var sceneOneVariable = GameScene()
-    var highScore = SKLabelNode()
     
     override func didMove(to view: SKView) {
         createBackground()
@@ -95,19 +94,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         character.physicsBody?.contactTestBitMask = (character.physicsBody?.collisionBitMask)!
         addChild(character) // add ball object to the view
     }
-    
-    func makeHighScoreLabel() {
-        
-    }
-    
-    func switchToSceneOne() {
-        let sceneOne = GameScene()
-        sceneOne.scaleMode = .resizeFill
-        self.view!.presentScene(sceneOne, transition: SKTransition.fade(withDuration: 0.15))
-        sceneOneVariable.playButton.alpha = 1
-        sceneOneVariable.highScoreLabel.alpha = 1
-    }
-    
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         let location = touch.location(in: self)
@@ -193,6 +180,15 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         else if character.position.y <= frame.midY {
             doOnce = true
         }
+        
+        if 1 == 1 {
+            let highScore = self.sceneOneVariable.highScoreLabel
+            highScore.alpha = 1
+            //for every time the distance changes () {
+            //let howFarCharacterHasMoved = distance
+            //self.highScore.text = "Score: " + howFarCharacterHasMoved
+            //}
+        }
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
@@ -204,5 +200,13 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
                 }
             }
         }
+    }
+    
+    func switchToSceneOne() {
+        let sceneOne = GameScene()
+        sceneOne.scaleMode = .resizeFill
+        self.view!.presentScene(sceneOne, transition: SKTransition.fade(withDuration: 0.15))
+        sceneOneVariable.playButton.alpha = 1
+        sceneOneVariable.highScoreLabel.alpha = 1
     }
 }
