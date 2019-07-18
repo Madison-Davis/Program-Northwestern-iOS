@@ -12,13 +12,21 @@ import GameplayKit
 class GameScene: SKScene {
 let label = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 60))
 let playButton = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
-let highScoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 40))
+let highScoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 30))
+var highScoreInt = 0
+var numberOfTimesReset = 0
+var one = 0
     
     override func didMove(to view: SKView) {
         createBackground()
         makeTitleLabe()
         makePlayButton()
-        makeHighScore()
+        makeHighScoreLabel()
+        print(score)
+        if score > highScoreInt {
+            highScoreLabel.text = "High Score: "  + String(score)
+            print("Yes")
+        }
     }
 
     func createBackground() {
@@ -50,13 +58,13 @@ let highScoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 40))
         self.view?.addSubview(playButton)
     }
     
-    func makeHighScore() {
+    func makeHighScoreLabel() {
         highScoreLabel.center = CGPoint(x: 210, y: 220)
         highScoreLabel.textAlignment = .center
         highScoreLabel.font = UIFont(name: "Marker Felt", size: 25.0)
         highScoreLabel.backgroundColor = UIColor.orange
         highScoreLabel.textColor = UIColor.black
-        highScoreLabel.text = "High Score: "
+        highScoreLabel.text = "High Score: 000"
         self.view?.addSubview(highScoreLabel)
     }
 
@@ -65,5 +73,7 @@ let highScoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 40))
         sceneTwo.scaleMode = .resizeFill
         self.view!.presentScene(sceneTwo, transition: SKTransition.fade(withDuration: 0.15))
         playButton.alpha = 0
+        highScoreLabel.alpha = 0
+        sceneTwo.oneTime = 1
     }
 }

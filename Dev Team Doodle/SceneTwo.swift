@@ -6,6 +6,8 @@
 //  Copyright © 2019 Madison Davis. All rights reserved.
 //
 
+var score = 0
+
 import Foundation
 import CoreMotion
 import SpriteKit
@@ -19,15 +21,23 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     var character = SKSpriteNode()
     var motionManager = CMMotionManager()
     var previousGravity = SKPhysicsWorld()
+    var backButton = SKLabelNode()
     var lastTouchPosition: CGPoint?
     var counter = 1
     var sceneOneVariable = GameScene()
+    var distance: CGFloat = 0.0
+    var cumulativeScore = Int()
+    let scoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 30))
+    var numberOfTimesBricksHaveMovedDown = 1.0
+    var doOnce = 1
+    var oneTime = 1
     var moveB = SKAction()
     
     override func didMove(to view: SKView) {
         createBackground()
         makeInitialBricks()
         chooseNumber()
+        makeScore()
         physicsWorld.contactDelegate = self
         character.physicsBody?.isDynamic = true
         character.physicsBody?.applyImpulse(CGVector(dx: 0, dy: -15))
@@ -49,6 +59,23 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         starsBackground.position = CGPoint(x: frame.midX, y: frame.midY)
         starsBackground.zPosition = -1
         addChild(starsBackground)
+    }
+    
+    func makeScore() {
+        scoreLabel.center = CGPoint(x: 210, y: 220)
+        scoreLabel.textAlignment = .center
+        scoreLabel.font = UIFont(name: "Marker Felt", size: 25.0)
+        scoreLabel.backgroundColor = UIColor.orange
+        scoreLabel.textColor = UIColor.black
+        scoreLabel.text = "Score: "
+        self.view?.addSubview(scoreLabel)
+    }
+    
+    func makeBackButton() {
+        backButton.text = "Game Over. Tap to Restart."
+        backButton.fontSize = 20
+        backButton.position = CGPoint(x: frame.midX, y: frame.midY - 200)
+        addChild(backButton)
     }
     
     func makeInitialBricks() {
@@ -105,13 +132,20 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         // does not slow down over time
         character.physicsBody?.linearDamping = 0
         character.physicsBody?.contactTestBitMask = (character.physicsBody?.collisionBitMask)!
-        addChild(character) // add ball object to the view
+        addChild(character) // add ball object to view
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         let location = touch.location(in: self)
         lastTouchPosition = location
+        
+        for touch: AnyObject in touches {
+            let location = touch.location(in: self)
+            if self.atPoint(location) == self.backButton {
+                switchToSceneOne()
+            }
+        }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -142,16 +176,15 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         else if character.position.x < frame.minX {
             character.position.x = frame.maxX
         }
+        
         if character.position.y < frame.minY {
-            let alert = UIAlertController(title: "Game Over", message: "You lost! A ha ha.", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "Back", style: .default, handler: { (action) in
-                let sceneOne = GameScene()
-                sceneOne.scaleMode = .resizeFill
-                self.view!.presentScene(sceneOne, transition: SKTransition.fade(withDuration: 0.15))
-                self.sceneOneVariable.playButton.alpha = 0
-            }))
-            self.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)
+            character.removeFromParent()
+            if oneTime == 1 {
+                self.makeBackButton()
+                oneTime = 0
+            }
         }
+        
         for Brick in bricks {
             if Brick.position.y < frame.minY {
                 let index = bricks.firstIndex(of: Brick)!
@@ -225,7 +258,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         }
         
         if character.position.y > frame.midY {
-            let distance = character.position.y - frame.midY
+            distance = character.position.y - frame.midY
             character.position.y = frame.midY
             //make a timer so that the bricks slowly go down, but do it later
             //move down all the bricks
@@ -233,17 +266,17 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
                 let initialYPosition = brick.position.y
                 brick.position.y = initialYPosition - distance
             }
-            //create new bricks
+            //record # times bricks moved down
+            if doOnce == 1 {
+                numberOfTimesBricksHaveMovedDown = numberOfTimesBricksHaveMovedDown + 0.1
+                doOnce = 0
+            }
+            score = Int(numberOfTimesBricksHaveMovedDown * 40)
+            for _ in 1...2 {
+                scoreLabel.text = "Score: " + String(score)
+            }
         }
-        
-        if 1 == 1 {
-            let highScore = self.sceneOneVariable.highScoreLabel
-            highScore.alpha = 1
-            //for every time the distance changes () {
-            //let howFarCharacterHasMoved = distance
-            //self.highScore.text = "Score: " + howFarCharacterHasMoved
-            //}
-        }
+        doOnce = 1
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
@@ -260,9 +293,11 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     func switchToSceneOne() {
         let sceneOne = GameScene()
         sceneOne.scaleMode = .resizeFill
-        self.view!.presentScene(sceneOne, transition: SKTransition.fade(withDuration: 0.15))
+        self.view?.presentScene(sceneOne, transition: SKTransition.fade(withDuration: 0.15))
         sceneOneVariable.playButton.alpha = 1
         sceneOneVariable.highScoreLabel.alpha = 1
+        sceneOneVariable.numberOfTimesReset = 1
+        print(score)
     }
     
     func chooseNumber() {
@@ -283,6 +318,6 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
             makeCharacter(image: "rocket")
         }
     }
-    
 }
+
 
