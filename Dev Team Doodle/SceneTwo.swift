@@ -16,7 +16,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     var movingBrick = SKSpriteNode()
     var fakeBrick = SKSpriteNode()
     var bricks = [SKSpriteNode]()
-    var character = SKShapeNode()
+    var character = SKSpriteNode()
     var motionManager = CMMotionManager()
     var previousGravity = SKPhysicsWorld()
     var lastTouchPosition: CGPoint?
@@ -27,7 +27,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     override func didMove(to view: SKView) {
         createBackground()
         makeInitialBricks()
-        makeCharacter()
+        chooseNumber()
         physicsWorld.contactDelegate = self
         character.physicsBody?.isDynamic = true
         character.physicsBody?.applyImpulse(CGVector(dx: 0, dy: -15))
@@ -86,11 +86,9 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    func makeCharacter() {
-        character = SKShapeNode(circleOfRadius: 10)
+    func makeCharacter(image: String) {
+        character = SKSpriteNode(imageNamed: image)
         character.position = CGPoint(x: frame.midX, y: frame.minY + 200)
-        character.strokeColor = UIColor.black
-        character.fillColor = UIColor.yellow
         character.name = "character"
         // physics shape matches ball image
         character.physicsBody = SKPhysicsBody(circleOfRadius: 10)
@@ -266,4 +264,25 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         sceneOneVariable.playButton.alpha = 1
         sceneOneVariable.highScoreLabel.alpha = 1
     }
+    
+    func chooseNumber() {
+        let ball = Int.random(in: 1...5)
+        if ball == 1 {
+            makeCharacter(image: "astro")
+        }
+        if ball == 2 {
+            makeCharacter(image: "moon")
+        }
+        if ball == 3 {
+            makeCharacter(image: "star")
+        }
+        if ball == 4 {
+            makeCharacter(image: "purple")
+        }
+        if ball == 5 {
+            makeCharacter(image: "rocket")
+        }
+    }
+    
 }
+
