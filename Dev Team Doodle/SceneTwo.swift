@@ -132,7 +132,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         // does not slow down over time
         character.physicsBody?.linearDamping = 0
         character.physicsBody?.contactTestBitMask = (character.physicsBody?.collisionBitMask)!
-        addChild(character) // add ball object to the view
+        addChild(character) // add ball object to view
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
