@@ -236,16 +236,6 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         doOnce = 1
     }
 
-//    func youLostAlert (message: String) {
-//        let alert = UIAlertController(title: message, message: nil, preferredStyle: .alert)
-//        let alertAction = UIAlertAction(title: "You Lost!", style: .default) {
-//            (action) -> Void in self.switchToSceneOne()
-//        }
-//        alert.addAction(alertAction)
-//        self.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)
-//    }
-    
-
     func didBegin(_ contact: SKPhysicsContact) {
         if let characterYVelocity = character.physicsBody?.velocity.dy {
             if characterYVelocity >= CGFloat(0) {
@@ -261,8 +251,6 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         let sceneOne = GameScene()
         sceneOne.scaleMode = .resizeFill
         self.view?.presentScene(sceneOne, transition: SKTransition.fade(withDuration: 0.15))
-//        let dvc = segue.destination as! FinalViewController
-//        dvc.burgerCost = self.burgerCost
         sceneOneVariable.playButton.alpha = 1
         sceneOneVariable.highScoreLabel.alpha = 1
         sceneOneVariable.numberOfTimesReset = 1
