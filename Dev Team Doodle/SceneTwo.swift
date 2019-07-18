@@ -191,13 +191,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
                 Brick.removeFromParent()
                 brick = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 5))
                 if let y = bricks.last {
-                    let direction = Bool.random()
-                    if direction == true {
-                        brick.position = CGPoint(x: frame.minX, y: y.position.y + CGFloat(40))
-                    }
-                    else {
-                        brick.position = CGPoint(x: frame.maxX, y: y.position.y + CGFloat(40))
-                    }
+                    brick.position = CGPoint(x: CGFloat.random(in: frame.minX...frame.maxX), y: y.position.y + CGFloat(40))
                     brick.name = "brick\(counter)"
                     brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
                     brick.physicsBody?.isDynamic = false
@@ -211,7 +205,13 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
                         bricks.last?.removeFromParent()
                         bricks.removeLast()
                         movingBrick = SKSpriteNode(color: .blue, size: CGSize(width: 50, height: 5))
-                        movingBrick.position = CGPoint(x:CGFloat.random(in: frame.minX...frame.maxX), y: movingBrickY!)
+                        let direction = Bool.random()
+                        if direction == true {
+                            movingBrick.position = CGPoint(x: frame.minX, y: movingBrickY! + CGFloat(40))
+                        }
+                        else {
+                            movingBrick.position = CGPoint(x: frame.maxX, y: movingBrickY! + CGFloat(40))
+                        }
                         movingBrick.name = "brick\(counter)"
                         movingBrick.physicsBody = SKPhysicsBody(rectangleOf:movingBrick.size)
                         movingBrick.physicsBody?.isDynamic = true
@@ -225,6 +225,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
                         fakeBrick = SKSpriteNode(color: .orange, size: CGSize(width: 50, height: 5))
                         fakeBrick.position = CGPoint(x: CGFloat.random(in: frame.minX...frame.maxX), y: fakeBrickY)
                         fakeBrick.name = "brick\(counter)"
+                        fakeBrick.physicsBody?.collisionBitMask = 0
                         bricks.append(fakeBrick)
                         addChild(fakeBrick)
                         counter += 1
@@ -233,7 +234,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
             }
             if Brick.color == .blue {
                 if Brick.position.x <= frame.minX + 50 {
-                    moveB = SKAction.moveTo(x: frame.minX, duration: TimeInterval(Int.random(in: 2...6)))
+                    moveB = SKAction.moveTo(x: frame.maxX, duration: TimeInterval(Int.random(in: 2...6)))
                     Brick.run(moveB)
                 }
                 else if Brick.position.x >= frame.maxX - 50 {
