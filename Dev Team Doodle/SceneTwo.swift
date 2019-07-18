@@ -28,6 +28,15 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         physicsWorld.contactDelegate = self
         character.physicsBody?.isDynamic = true
         character.physicsBody?.applyImpulse(CGVector(dx: 0, dy: -15))
+        if motionManager.isAccelerometerAvailable {
+            motionManager.accelerometerUpdateInterval = 0.01
+            motionManager.startAccelerometerUpdates(to: .main) {
+                (data, error) in
+                guard let _ = data, error == nil else {
+                    return
+                }
+            }
+        }
     }
     
     func createBackground() {
@@ -42,7 +51,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     func makeInitialBricks() {
         //make the base bricks
         for i in 1...7 {
-            brick = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 20))
+            brick = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 5))
             brick.position = CGPoint(x: 55 * (i-1) + Int(frame.minX) + 40, y: Int(frame.minY) + 50)
             brick.name = "brick\(counter)"
             brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
@@ -54,7 +63,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         //make the random bricks
         for i in 1...9 {
             for _ in 1...(Int.random(in: 1...3)) {
-                brick = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 20))
+                brick = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 5))
                 brick.position = CGPoint(x: CGFloat.random(in: frame.minX...frame.maxX), y: CGFloat(frame.minX + CGFloat((80 * i))))
                 brick.name = "brick\(counter)"
                 brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
@@ -121,7 +130,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         }
         #else
         if let accelerometerData = motionManager.accelerometerData {
-            physicsWorld.gravity = CGVector(dx: CGFloat(accelerometerData.acceleration.y) * -50, dy: previousGravity.gravity.dy)
+            physicsWorld.gravity = CGVector(dx: CGFloat(accelerometerData.acceleration.x) * 20, dy: previousGravity.gravity.dy)
         }
         #endif
         if character.position.x > frame.maxX {
@@ -145,7 +154,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
                 let index = bricks.firstIndex(of: Brick)!
                 bricks.remove(at: index)
                 Brick.removeFromParent()
-                brick = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 20))
+                brick = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 5))
                 if let y = bricks.last {
                     brick.position = CGPoint(x: CGFloat.random(in: frame.minX...frame.maxX), y: y.position.y + CGFloat(40))
                     brick.name = "brick\(counter)"
