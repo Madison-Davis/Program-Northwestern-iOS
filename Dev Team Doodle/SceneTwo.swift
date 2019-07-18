@@ -51,7 +51,6 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
             }
         }
     }
-    //blah
     func createBackground() {
         let stars = SKTexture(imageNamed: "stars")
         let starsBackground = SKSpriteNode(texture: stars)
