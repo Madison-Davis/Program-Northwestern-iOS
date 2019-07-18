@@ -15,7 +15,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     var brick = SKSpriteNode()
     var bricks = [SKSpriteNode]()
     var character = SKSpriteNode()
-    var motionManager: CMMotionManager!
+    var motionManager = CMMotionManager()
     var previousGravity = SKPhysicsWorld()
     var lastTouchPosition: CGPoint?
     var counter = 1
