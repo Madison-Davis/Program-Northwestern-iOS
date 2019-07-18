@@ -67,9 +67,10 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     }
     
     func makeBackButton() {
+        print("OK")
             backButton.text = "Game Over. Tap to Restart."
             backButton.fontSize = 20
-            backButton.position = CGPoint(x: frame.midX + 100, y: frame.midY - 50)
+            backButton.position = CGPoint(x: frame.midX, y: frame.midY - 200)
             addChild(backButton)
     }
     
@@ -136,6 +137,13 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         guard let touch = touches.first else { return }
         let location = touch.location(in: self)
         lastTouchPosition = location
+        
+        for touch: AnyObject in touches {
+            let location = touch.location(in: self)
+            if self.atPoint(location) == self.backButton {
+            switchToSceneOne()
+            }
+        }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
