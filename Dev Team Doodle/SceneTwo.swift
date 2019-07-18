@@ -14,7 +14,7 @@ import GameplayKit
 class SceneTwo: SKScene, SKPhysicsContactDelegate {
     var brick = SKSpriteNode()
     var bricks = [SKSpriteNode]()
-    var character = SKShapeNode()
+    var character = SKSpriteNode()
     var motionManager: CMMotionManager!
     var previousGravity = SKPhysicsWorld()
     var lastTouchPosition: CGPoint?
@@ -75,10 +75,8 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     }
     
     func makeCharacter() {
-        character = SKShapeNode(circleOfRadius: 10)
+        character = SKSpriteNode(imageNamed: "astro")
         character.position = CGPoint(x: frame.midX, y: frame.minY + 200)
-        character.strokeColor = UIColor.black
-        character.fillColor = UIColor.yellow
         character.name = "character"
         // physics shape matches ball image
         character.physicsBody = SKPhysicsBody(circleOfRadius: 10)
