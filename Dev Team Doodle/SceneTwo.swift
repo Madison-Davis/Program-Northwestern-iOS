@@ -15,7 +15,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     var brick = SKSpriteNode()
     var bricks = [SKSpriteNode]()
     var character = SKShapeNode()
-    var motionManager: CMMotionManager!
+    var motionManager = CMMotionManager()
     var previousGravity = SKPhysicsWorld()
     var backButton = SKLabelNode()
     var lastTouchPosition: CGPoint?
@@ -36,6 +36,15 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         physicsWorld.contactDelegate = self
         character.physicsBody?.isDynamic = true
         character.physicsBody?.applyImpulse(CGVector(dx: 0, dy: -15))
+        if motionManager.isAccelerometerAvailable {
+            motionManager.accelerometerUpdateInterval = 0.01
+            motionManager.startAccelerometerUpdates(to: .main) {
+                (data, error) in
+                guard let data = data, error == nil else {
+                    return
+                }
+            }
+        }
     }
     
     func createBackground() {
@@ -141,7 +150,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         }
         #else
         if let accelerometerData = motionManager.accelerometerData {
-            physicsWorld.gravity = CGVector(dx: CGFloat(accelerometerData.acceleration.y) * -50, dy: previousGravity.gravity.dy)
+            physicsWorld.gravity = CGVector(dx: CGFloat(accelerometerData.acceleration.x) * 20, dy: previousGravity.gravity.dy)
         }
         #endif
         if character.position.x > frame.maxX {
