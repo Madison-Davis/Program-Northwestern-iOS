@@ -6,6 +6,8 @@
 //  Copyright © 2019 Madison Davis. All rights reserved.
 //
 
+var score = 0
+
 import Foundation
 import CoreMotion
 import SpriteKit
@@ -23,16 +25,15 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     var sceneOneVariable = GameScene()
     var distance: CGFloat = 0.0
     var cumulativeScore = Int()
-    let scoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 40))
+    let scoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 30))
     var numberOfTimesBricksHaveMovedDown = 1.0
     var doOnce = 1
-    var scoreText = 0
+    var oneTime = 1
     
     override func didMove(to view: SKView) {
         createBackground()
         makeInitialBricks()
         chooseNumber()
-        makeCharacter()
         makeScore()
         physicsWorld.contactDelegate = self
         character.physicsBody?.isDynamic = true
@@ -67,8 +68,8 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         self.view?.addSubview(scoreLabel)
     }
     
+    
     func makeBackButton() {
-        print("OK")
             backButton.text = "Game Over. Tap to Restart."
             backButton.fontSize = 20
             backButton.position = CGPoint(x: frame.midX, y: frame.midY - 200)
@@ -176,7 +177,10 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         
         if character.position.y < frame.minY {
             character.removeFromParent()
-            self.makeBackButton()
+            if oneTime == 1 {
+                self.makeBackButton()
+                oneTime = 0
+            }
 //           self.youLostAlert(message: "Game Over")
         }
         for Brick in bricks {
@@ -224,13 +228,12 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
                 numberOfTimesBricksHaveMovedDown = numberOfTimesBricksHaveMovedDown + 0.1
                 doOnce = 0
             }
-            scoreText = Int(numberOfTimesBricksHaveMovedDown * 40)
+            score = Int(numberOfTimesBricksHaveMovedDown * 40)
             for _ in 1...2 {
-                scoreLabel.text = "Score: " + String(scoreText)
+                scoreLabel.text = "Score: " + String(score)
             }
         }
         doOnce = 1
-    
     }
 
 //    func youLostAlert (message: String) {
@@ -255,15 +258,15 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     }
     
     func switchToSceneOne() {
-        print(scoreText)
-        if scoreText > 100 {
-            print("OK")
-        }
         let sceneOne = GameScene()
         sceneOne.scaleMode = .resizeFill
         self.view?.presentScene(sceneOne, transition: SKTransition.fade(withDuration: 0.15))
+//        let dvc = segue.destination as! FinalViewController
+//        dvc.burgerCost = self.burgerCost
         sceneOneVariable.playButton.alpha = 1
         sceneOneVariable.highScoreLabel.alpha = 1
+        sceneOneVariable.numberOfTimesReset = 1
+        print(score)
     }
     
     func chooseNumber() {
@@ -285,6 +288,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+
 }
 
 
