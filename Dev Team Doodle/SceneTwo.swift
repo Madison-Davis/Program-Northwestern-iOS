@@ -21,11 +21,17 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     var counter = 1
     var sceneOneVariable = GameScene()
     var distance: CGFloat = 0.0
+    var cumulativeScore = Int()
+    let scoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 40))
+    var numberOfTimesBricksHaveMovedDown = 1.0
+    var doOnce = 1
+    var scoreText = 0
     
     override func didMove(to view: SKView) {
         createBackground()
         makeInitialBricks()
         makeCharacter()
+        makeScore()
         physicsWorld.contactDelegate = self
         character.physicsBody?.isDynamic = true
         character.physicsBody?.applyImpulse(CGVector(dx: 0, dy: -15))
@@ -38,6 +44,16 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         starsBackground.position = CGPoint(x: frame.midX, y: frame.midY)
         starsBackground.zPosition = -1
         addChild(starsBackground)
+    }
+    
+    func makeScore() {
+        scoreLabel.center = CGPoint(x: 210, y: 220)
+        scoreLabel.textAlignment = .center
+        scoreLabel.font = UIFont(name: "Marker Felt", size: 25.0)
+        scoreLabel.backgroundColor = UIColor.orange
+        scoreLabel.textColor = UIColor.black
+        scoreLabel.text = "Score: "
+        self.view?.addSubview(scoreLabel)
     }
     
     func makeInitialBricks() {
@@ -133,16 +149,11 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         else if character.position.x < frame.minX {
             character.position.x = frame.maxX
         }
+        
         if character.position.y < frame.minY {
-            let alert = UIAlertController(title: "Game Over", message: "You lost! A ha ha.", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "Back", style: .default, handler: { (action) in
-                let sceneOne = GameScene()
-                sceneOne.scaleMode = .resizeFill
-                self.view!.presentScene(sceneOne, transition: SKTransition.fade(withDuration: 0.15))
-                self.sceneOneVariable.playButton.alpha = 0
-            }))
-            self.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)
+            self.youLostAlert(message: "Game Over")
         }
+        
         for brick in bricks {
             if brick.position.y < frame.minY {
                 let index = bricks.firstIndex(of: brick)!
@@ -166,7 +177,6 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         
         if character.position.y > frame.midY {
             distance = character.position.y - frame.midY
-            let distanceInt = Int(distance)
             character.position.y = frame.midY
             //make a timer so that the bricks slowly go down, but do it later
             //move down all the bricks
@@ -174,12 +184,34 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
                 let initialYPosition = brick.position.y
                 brick.position.y = initialYPosition - distance
             }
-                let score = self.sceneOneVariable.highScoreLabel
-                score.alpha = 1
-                score.text = "Score: " + String(distanceInt)
+            //record # times bricks moved down
+            if doOnce == 1 {
+                numberOfTimesBricksHaveMovedDown = numberOfTimesBricksHaveMovedDown + 0.1
+                doOnce = 0
+            }
+            scoreText = Int(numberOfTimesBricksHaveMovedDown * 40)
+            for _ in 1...2 {
+                scoreLabel.text = "Score: " + String(scoreText)
+            }
         }
+        doOnce = 1
+    
+    }
+
+    
+    func youLostAlert (message: String) {
+        let alert = UIAlertController(title: message, message: nil, preferredStyle: .alert)
+        let alertAction = UIAlertAction(title: "You Lost!", style: .default) {
+            (action) -> Void in self.switchToSceneOne()
+        }
+        alert.addAction(alertAction)
+        if let vc = self.scene?.view?.window?.rootViewController {
+            vc.present(alert, animated: true, completion: nil)
+        }
+        //present(alert, animated: true, completion: nil)
     }
     
+
     func didBegin(_ contact: SKPhysicsContact) {
         if let characterYVelocity = character.physicsBody?.velocity.dy {
             if characterYVelocity >= CGFloat(0) {
@@ -204,10 +236,16 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     }
     
     func switchToSceneOne() {
+        print(scoreText)
+        if scoreText > 100 {
+            print("OK")
+        }
         let sceneOne = GameScene()
         sceneOne.scaleMode = .resizeFill
-        self.view!.presentScene(sceneOne, transition: SKTransition.fade(withDuration: 0.15))
+        self.view?.presentScene(sceneOne, transition: SKTransition.fade(withDuration: 0.15))
         sceneOneVariable.playButton.alpha = 1
         sceneOneVariable.highScoreLabel.alpha = 1
     }
 }
+
+

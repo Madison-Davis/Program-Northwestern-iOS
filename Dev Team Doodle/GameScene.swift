@@ -13,6 +13,7 @@ class GameScene: SKScene {
 let label = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 60))
 let playButton = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
 let highScoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 40))
+var highScoreInt = 0.0
     
     override func didMove(to view: SKView) {
         createBackground()
@@ -65,5 +66,6 @@ let highScoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 40))
         sceneTwo.scaleMode = .resizeFill
         self.view!.presentScene(sceneTwo, transition: SKTransition.fade(withDuration: 0.15))
         playButton.alpha = 0
+        highScoreLabel.alpha = 0
     }
 }
