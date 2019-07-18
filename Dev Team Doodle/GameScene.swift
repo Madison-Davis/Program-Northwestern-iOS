@@ -24,18 +24,16 @@ var lastHighScore = 0
         makeTitleLabe()
         makePlayButton()
         makeHighScoreLabel()
-        print(score)
         if score > 0 && oneTime == 1 {
             //first score, must be greater than 0
             highScoreLabel.text = "High Score: "  + String(score)
             lastHighScore = Int(score)
-            print(lastHighScore)
             oneTime = oneTime + 1
+            print(oneTime)
         }
         else if score > lastHighScore {
             highScoreLabel.text = "High Score: " + String(score)
             lastHighScore = Int(score)
-            print(lastHighScore)
             score = 0
         }
     }

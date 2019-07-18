@@ -26,7 +26,6 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     var counter = 1
     var sceneOneVariable = GameScene()
     var distance: CGFloat = 0.0
-    var cumulativeScore = Int()
     let scoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 30))
     var numberOfTimesBricksHaveMovedDown = 1.0
     var doOnce = 1
@@ -307,7 +306,6 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         sceneOneVariable.playButton.alpha = 1
         sceneOneVariable.highScoreLabel.alpha = 1
         sceneOneVariable.numberOfTimesReset = 1
-        print(score)
     }
     
     func chooseNumber() {
