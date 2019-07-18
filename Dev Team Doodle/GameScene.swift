@@ -6,38 +6,33 @@
 //  Copyright © 2019 Madison Davis. All rights reserved.
 //
 
+var lastHighScore = Int()
+
 import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene {
-let label = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 60))
-let playButton = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
-let highScoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 30))
-var highScoreInt = 0
-var numberOfTimesReset = 0
-var one = 0
-var oneTime = 1
-var lastHighScore = 0
+    let label = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 60))
+    let playButton = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
+    let highScoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 30))
+    var numberOfTimesReset = 0
+    var tempScore = 0
     
     override func didMove(to view: SKView) {
         createBackground()
         makeTitleLabe()
         makePlayButton()
         makeHighScoreLabel()
-        if score > 0 && oneTime == 1 {
-            //first score, must be greater than 0
-            highScoreLabel.text = "High Score: "  + String(score)
-            lastHighScore = Int(score)
-            oneTime = oneTime + 1
-            print(oneTime)
+        tempScore = score
+        if tempScore > lastHighScore {
+            print(lastHighScore)
+            lastHighScore = tempScore
+            print(tempScore)
+            print(lastHighScore)
         }
-        else if score > lastHighScore {
-            highScoreLabel.text = "High Score: " + String(score)
-            lastHighScore = Int(score)
-            score = 0
-        }
+        highScoreLabel.text = "High Score: " + String(lastHighScore)
     }
-
+    
     func createBackground() {
         let stars = SKTexture(imageNamed: "space")
         let starsBackground1 = SKSpriteNode(texture: stars)
@@ -56,7 +51,7 @@ var lastHighScore = 0
         label.text = "Space Jump"
         self.view?.addSubview(label)
     }
-
+    
     func makePlayButton() {
         playButton.center = CGPoint(x: 205, y: 600)
         playButton.textAlignment = .center
@@ -76,7 +71,7 @@ var lastHighScore = 0
         highScoreLabel.text = "High Score: 000"
         self.view?.addSubview(highScoreLabel)
     }
-
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let sceneTwo = SceneTwo()
         sceneTwo.scaleMode = .resizeFill

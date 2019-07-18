@@ -6,7 +6,7 @@
 //  Copyright © 2019 Madison Davis. All rights reserved.
 //
 
-var score = 0
+var score:Int = 0
 
 import Foundation
 import CoreMotion
