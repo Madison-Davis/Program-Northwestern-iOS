@@ -16,6 +16,8 @@ let highScoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 30))
 var highScoreInt = 0
 var numberOfTimesReset = 0
 var one = 0
+var oneTime = 1
+var lastHighScore = 0
     
     override func didMove(to view: SKView) {
         createBackground()
@@ -23,9 +25,18 @@ var one = 0
         makePlayButton()
         makeHighScoreLabel()
         print(score)
-        if score > highScoreInt {
+        if score > 0 && oneTime == 1 {
+            //first score, must be greater than 0
             highScoreLabel.text = "High Score: "  + String(score)
-            print("Yes")
+            lastHighScore = Int(score)
+            print(lastHighScore)
+            oneTime = oneTime + 1
+        }
+        else if score > lastHighScore {
+            highScoreLabel.text = "High Score: " + String(score)
+            lastHighScore = Int(score)
+            print(lastHighScore)
+            score = 0
         }
     }
 
