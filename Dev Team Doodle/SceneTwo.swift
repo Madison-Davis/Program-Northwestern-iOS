@@ -68,12 +68,11 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         self.view?.addSubview(scoreLabel)
     }
     
-    
     func makeBackButton() {
-            backButton.text = "Game Over. Tap to Restart."
-            backButton.fontSize = 20
-            backButton.position = CGPoint(x: frame.midX, y: frame.midY - 200)
-            addChild(backButton)
+        backButton.text = "Game Over. Tap to Restart."
+        backButton.fontSize = 20
+        backButton.position = CGPoint(x: frame.midX, y: frame.midY - 200)
+        addChild(backButton)
     }
     
     func makeInitialBricks() {
@@ -141,7 +140,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         for touch: AnyObject in touches {
             let location = touch.location(in: self)
             if self.atPoint(location) == self.backButton {
-            switchToSceneOne()
+                switchToSceneOne()
             }
         }
     }
@@ -155,7 +154,6 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         lastTouchPosition = nil
     }
-    
     
     override func update(_ currentTime: TimeInterval) {
         #if targetEnvironment(simulator)
@@ -181,8 +179,8 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
                 self.makeBackButton()
                 oneTime = 0
             }
-//           self.youLostAlert(message: "Game Over")
         }
+        
         for Brick in bricks {
             if Brick.position.y < frame.minY {
                 let index = bricks.firstIndex(of: Brick)!
@@ -235,7 +233,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         }
         doOnce = 1
     }
-
+    
     func didBegin(_ contact: SKPhysicsContact) {
         if let characterYVelocity = character.physicsBody?.velocity.dy {
             if characterYVelocity >= CGFloat(0) {
@@ -275,8 +273,6 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
             makeCharacter(image: "rocket")
         }
     }
-    
-
 }
 
 
