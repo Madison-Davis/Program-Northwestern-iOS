@@ -66,6 +66,13 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         self.view?.addSubview(scoreLabel)
     }
     
+    func makeBackButton() {
+            backButton.text = "Game Over. Tap to Restart."
+            backButton.fontSize = 20
+            backButton.position = CGPoint(x: frame.midX + 100, y: frame.midY - 50)
+            addChild(backButton)
+    }
+    
     func makeInitialBricks() {
         //make the base bricks
         for i in 1...7 {
@@ -162,7 +169,8 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         
         if character.position.y < frame.minY {
             character.removeFromParent()
-            self.youLostAlert(message: "Game Over")
+            self.makeBackButton()
+//           self.youLostAlert(message: "Game Over")
         }
         for Brick in bricks {
             if Brick.position.y < frame.minY {
@@ -218,15 +226,14 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     
     }
 
-    
-    func youLostAlert (message: String) {
-        let alert = UIAlertController(title: message, message: nil, preferredStyle: .alert)
-        let alertAction = UIAlertAction(title: "You Lost!", style: .default) {
-            (action) -> Void in self.switchToSceneOne()
-        }
-        alert.addAction(alertAction)
-        self.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)
-    }
+//    func youLostAlert (message: String) {
+//        let alert = UIAlertController(title: message, message: nil, preferredStyle: .alert)
+//        let alertAction = UIAlertAction(title: "You Lost!", style: .default) {
+//            (action) -> Void in self.switchToSceneOne()
+//        }
+//        alert.addAction(alertAction)
+//        self.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)
+//    }
     
 
     func didBegin(_ contact: SKPhysicsContact) {
