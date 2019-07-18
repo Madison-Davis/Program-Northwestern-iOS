@@ -17,6 +17,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     var character = SKShapeNode()
     var motionManager: CMMotionManager!
     var previousGravity = SKPhysicsWorld()
+    var backButton = SKLabelNode()
     var lastTouchPosition: CGPoint?
     var counter = 1
     var sceneOneVariable = GameScene()
@@ -151,6 +152,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         }
         
         if character.position.y < frame.minY {
+            character.removeFromParent()
             self.youLostAlert(message: "Game Over")
         }
         for Brick in bricks {
@@ -214,10 +216,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
             (action) -> Void in self.switchToSceneOne()
         }
         alert.addAction(alertAction)
-        if let vc = self.scene?.view?.window?.rootViewController {
-            vc.present(alert, animated: true, completion: nil)
-        }
-        //present(alert, animated: true, completion: nil)
+        self.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)
     }
     
 
