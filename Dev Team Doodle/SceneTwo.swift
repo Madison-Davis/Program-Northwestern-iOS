@@ -124,7 +124,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         lastTouchPosition = nil
     }
     
-    
+    //blah
     override func update(_ currentTime: TimeInterval) {
         #if targetEnvironment(simulator)
         if let currentTouch = lastTouchPosition {
