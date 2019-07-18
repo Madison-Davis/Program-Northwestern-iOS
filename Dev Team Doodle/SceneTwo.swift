@@ -32,6 +32,8 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     var doOnce = 1
     var oneTime = 1
     var moveB = SKAction()
+    let brickBitMask = UInt32(1)
+    let fakeBitMask = UInt32(2)
     
     override func didMove(to view: SKView) {
         createBackground()
@@ -86,6 +88,8 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
             brick.name = "brick\(counter)"
             brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
             brick.physicsBody?.isDynamic = false
+            brick.physicsBody?.categoryBitMask = brickBitMask
+            brick.physicsBody?.collisionBitMask = brickBitMask
             bricks.append(brick)
             addChild(brick)
             counter += 1
@@ -98,6 +102,8 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
                 brick.name = "brick\(counter)"
                 brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
                 brick.physicsBody?.isDynamic = false
+                brick.physicsBody?.categoryBitMask = brickBitMask
+                brick.physicsBody?.collisionBitMask = brickBitMask
                 bricks.append(brick)
                 addChild(brick)
                 counter += 1
@@ -216,6 +222,8 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
                         movingBrick.physicsBody = SKPhysicsBody(rectangleOf:movingBrick.size)
                         movingBrick.physicsBody?.isDynamic = true
                         movingBrick.physicsBody?.affectedByGravity = false
+                        movingBrick.physicsBody?.categoryBitMask = brickBitMask
+                        movingBrick.physicsBody?.collisionBitMask = brickBitMask
                         bricks.append(movingBrick)
                         addChild(movingBrick)
                         counter += 1
@@ -225,7 +233,8 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
                         fakeBrick = SKSpriteNode(color: .orange, size: CGSize(width: 50, height: 5))
                         fakeBrick.position = CGPoint(x: CGFloat.random(in: frame.minX...frame.maxX), y: fakeBrickY)
                         fakeBrick.name = "brick\(counter)"
-                        fakeBrick.physicsBody?.collisionBitMask = 0
+                        fakeBrick.physicsBody = nil
+                        fakeBrick.physicsBody?.categoryBitMask = fakeBitMask
                         bricks.append(fakeBrick)
                         addChild(fakeBrick)
                         counter += 1
