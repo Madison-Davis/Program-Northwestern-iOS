@@ -114,7 +114,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         character.physicsBody?.contactTestBitMask = (character.physicsBody?.collisionBitMask)!
         addChild(character) // add ball object to the view
     }
-
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         let location = touch.location(in: self)
@@ -140,7 +140,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         }
         #else
         if let accelerometerData = motionManager.accelerometerData {
-            physicsWorld.gravity = CGVector(dx: accelerometerData.acceleration.y * -50, dy: previousGravity.gravity.dy)
+            physicsWorld.gravity = CGVector(dx: CGFloat(accelerometerData.acceleration.y) * -50, dy: previousGravity.gravity.dy)
         }
         #endif
         if character.position.x > frame.maxX {
@@ -153,12 +153,21 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         if character.position.y < frame.minY {
             self.youLostAlert(message: "Game Over")
         }
-        
-        for brick in bricks {
-            if brick.position.y < frame.minY {
-                let index = bricks.firstIndex(of: brick)!
+        for Brick in bricks {
+            if Brick.position.y < frame.minY {
+                let index = bricks.firstIndex(of: Brick)!
                 bricks.remove(at: index)
-                brick.removeFromParent()
+                Brick.removeFromParent()
+                brick = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 20))
+                if let y = bricks.last {
+                    brick.position = CGPoint(x: CGFloat.random(in: frame.minX...frame.maxX), y: y.position.y + CGFloat(40))
+                    brick.name = "brick\(counter)"
+                    brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
+                    brick.physicsBody?.isDynamic = false
+                    bricks.append(brick)
+                    addChild(brick)
+                    counter += 1
+                }
             }
         }
         speedManager()
@@ -218,18 +227,6 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
                 if contact.bodyA.node?.name == "character" ||
                     contact.bodyB.node?.name == "character" {
                     character.physicsBody?.velocity.dy = CGFloat(800)
-                    if character.position.y >= frame.midY - 100 {
-                        for _ in 0...(Int.random(in: 0...1)) {
-                            brick = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 20))
-                            brick.position = CGPoint(x: CGFloat.random(in: frame.minX...frame.maxX), y: CGFloat(frame.maxY - 40))
-                            brick.name = "brick\(counter)"
-                            brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
-                            brick.physicsBody?.isDynamic = false
-                            bricks.append(brick)
-                            addChild(brick)
-                            counter += 1
-                        }
-                    }
                 }
             }
         }
