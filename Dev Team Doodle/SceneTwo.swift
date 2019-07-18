@@ -233,7 +233,6 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
                         fakeBrick = SKSpriteNode(color: .orange, size: CGSize(width: 50, height: 5))
                         fakeBrick.position = CGPoint(x: CGFloat.random(in: frame.minX...frame.maxX), y: fakeBrickY)
                         fakeBrick.name = "brick\(counter)"
-                        fakeBrick.physicsBody = nil
                         fakeBrick.physicsBody?.categoryBitMask = fakeBitMask
                         bricks.append(fakeBrick)
                         addChild(fakeBrick)
@@ -260,7 +259,9 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
                 }
             } else {
                 for brick in bricks {
-                    brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
+                    if brick.color != .orange {
+                        brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
+                    }
                     brick.physicsBody?.isDynamic = false
                 }
             }
