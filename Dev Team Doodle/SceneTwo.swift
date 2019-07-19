@@ -81,9 +81,8 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     
     func makeInitialBricks() {
         //make the base bricks
-        for i in 1...7 {
-            brick = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 5))
-            brick.position = CGPoint(x: 55 * (i-1) + Int(frame.minX) + 40, y: Int(frame.minY) + 50)
+            brick = SKSpriteNode(color: .white, size: CGSize(width: frame.maxX - frame.minX, height: 5))
+            brick.position = CGPoint(x: frame.midX, y: frame.minY + 50)
             brick.name = "brick\(counter)"
             brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
             brick.physicsBody?.isDynamic = false
@@ -92,7 +91,6 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
             bricks.append(brick)
             addChild(brick)
             counter += 1
-        }
         //make the random bricks
         for i in 1...9 {
             for _ in 1...(Int.random(in: 1...3)) {
