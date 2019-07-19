@@ -6,7 +6,7 @@
 //  Copyright © 2019 Madison Davis. All rights reserved.
 //
 
-var score = 0
+var score:Int = 0
 
 import Foundation
 import CoreMotion
@@ -26,7 +26,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     var counter = 1
     var sceneOneVariable = GameScene()
     var distance: CGFloat = 0.0
-    let scoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 30))
+    let scoreLabel = UILabel(frame: CGRect(x: (UIScreen.main.bounds.width)/2, y: UIScreen.main.bounds.minY + 150, width: 300, height: 30))
     var numberOfTimesBricksHaveMovedDown = 1.0
     var doOnce = 1
     var oneTime = 1
@@ -62,7 +62,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     }
     
     func makeScore() {
-        scoreLabel.center = CGPoint(x: 210, y: 220)
+        scoreLabel.center = CGPoint(x: (UIScreen.main.bounds.width)/2, y:  UIScreen.main.bounds.minY + 150)
         scoreLabel.textAlignment = .center
         scoreLabel.font = UIFont(name: "Marker Felt", size: 25.0)
         scoreLabel.backgroundColor = UIColor.orange
@@ -80,9 +80,8 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     
     func makeInitialBricks() {
         //make the base bricks
-        for i in 1...7 {
-            brick = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 5))
-            brick.position = CGPoint(x: 55 * (i-1) + Int(frame.minX) + 40, y: Int(frame.minY) + 50)
+            brick = SKSpriteNode(color: .white, size: CGSize(width: frame.maxX - frame.minX, height: 5))
+            brick.position = CGPoint(x: frame.midX, y: frame.minY + 50)
             brick.name = "brick\(counter)"
             brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
             brick.physicsBody?.isDynamic = false
@@ -91,7 +90,6 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
             bricks.append(brick)
             addChild(brick)
             counter += 1
-        }
         //make the random bricks
         for i in 1...9 {
             for _ in 1...(Int.random(in: 1...3)) {
@@ -306,6 +304,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         sceneOneVariable.playButton.alpha = 1
         sceneOneVariable.highScoreLabel.alpha = 1
         sceneOneVariable.numberOfTimesReset = 1
+        scoreLabel.alpha = 0
     }
     
     func chooseNumber() {
