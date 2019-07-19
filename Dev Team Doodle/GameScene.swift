@@ -39,6 +39,7 @@ var lastHighScore = 0
             score = 0
         }
     }
+    //blah
 
     func createBackground() {
         let stars = SKTexture(imageNamed: "space")
