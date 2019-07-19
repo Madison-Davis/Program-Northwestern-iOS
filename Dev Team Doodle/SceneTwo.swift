@@ -6,7 +6,7 @@
 //  Copyright © 2019 Madison Davis. All rights reserved.
 //
 
-var score = 0
+var score:Int = 0
 
 import Foundation
 import CoreMotion
@@ -26,12 +26,13 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     var counter = 1
     var sceneOneVariable = GameScene()
     var distance: CGFloat = 0.0
-    var cumulativeScore = Int()
     let scoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 30))
     var numberOfTimesBricksHaveMovedDown = 1.0
     var doOnce = 1
     var oneTime = 1
     var moveB = SKAction()
+    let brickBitMask = UInt32(1)
+    let fakeBitMask = UInt32(2)
     
     override func didMove(to view: SKView) {
         createBackground()
@@ -86,6 +87,8 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
             brick.name = "brick\(counter)"
             brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
             brick.physicsBody?.isDynamic = false
+            brick.physicsBody?.categoryBitMask = brickBitMask
+            brick.physicsBody?.collisionBitMask = brickBitMask
             bricks.append(brick)
             addChild(brick)
             counter += 1
@@ -98,6 +101,8 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
                 brick.name = "brick\(counter)"
                 brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
                 brick.physicsBody?.isDynamic = false
+                brick.physicsBody?.categoryBitMask = brickBitMask
+                brick.physicsBody?.collisionBitMask = brickBitMask
                 bricks.append(brick)
                 addChild(brick)
                 counter += 1
@@ -191,13 +196,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
                 Brick.removeFromParent()
                 brick = SKSpriteNode(color: .white, size: CGSize(width: 50, height: 5))
                 if let y = bricks.last {
-                    let direction = Bool.random()
-                    if direction == true {
-                        brick.position = CGPoint(x: frame.minX, y: y.position.y + CGFloat(40))
-                    }
-                    else {
-                        brick.position = CGPoint(x: frame.maxX, y: y.position.y + CGFloat(40))
-                    }
+                    brick.position = CGPoint(x: CGFloat.random(in: frame.minX...frame.maxX), y: y.position.y + CGFloat(40))
                     brick.name = "brick\(counter)"
                     brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
                     brick.physicsBody?.isDynamic = false
@@ -211,11 +210,19 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
                         bricks.last?.removeFromParent()
                         bricks.removeLast()
                         movingBrick = SKSpriteNode(color: .blue, size: CGSize(width: 50, height: 5))
-                        movingBrick.position = CGPoint(x:CGFloat.random(in: frame.minX...frame.maxX), y: movingBrickY!)
+                        let direction = Bool.random()
+                        if direction == true {
+                            movingBrick.position = CGPoint(x: frame.minX, y: movingBrickY! + CGFloat(40))
+                        }
+                        else {
+                            movingBrick.position = CGPoint(x: frame.maxX, y: movingBrickY! + CGFloat(40))
+                        }
                         movingBrick.name = "brick\(counter)"
                         movingBrick.physicsBody = SKPhysicsBody(rectangleOf:movingBrick.size)
                         movingBrick.physicsBody?.isDynamic = true
                         movingBrick.physicsBody?.affectedByGravity = false
+                        movingBrick.physicsBody?.categoryBitMask = brickBitMask
+                        movingBrick.physicsBody?.collisionBitMask = brickBitMask
                         bricks.append(movingBrick)
                         addChild(movingBrick)
                         counter += 1
@@ -225,6 +232,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
                         fakeBrick = SKSpriteNode(color: .orange, size: CGSize(width: 50, height: 5))
                         fakeBrick.position = CGPoint(x: CGFloat.random(in: frame.minX...frame.maxX), y: fakeBrickY)
                         fakeBrick.name = "brick\(counter)"
+                        fakeBrick.physicsBody?.categoryBitMask = fakeBitMask
                         bricks.append(fakeBrick)
                         addChild(fakeBrick)
                         counter += 1
@@ -233,7 +241,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
             }
             if Brick.color == .blue {
                 if Brick.position.x <= frame.minX + 50 {
-                    moveB = SKAction.moveTo(x: frame.minX, duration: TimeInterval(Int.random(in: 2...6)))
+                    moveB = SKAction.moveTo(x: frame.maxX, duration: TimeInterval(Int.random(in: 2...6)))
                     Brick.run(moveB)
                 }
                 else if Brick.position.x >= frame.maxX - 50 {
@@ -250,7 +258,9 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
                 }
             } else {
                 for brick in bricks {
-                    brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
+                    if brick.color != .orange {
+                        brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
+                    }
                     brick.physicsBody?.isDynamic = false
                 }
             }
@@ -296,7 +306,6 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         sceneOneVariable.playButton.alpha = 1
         sceneOneVariable.highScoreLabel.alpha = 1
         sceneOneVariable.numberOfTimesReset = 1
-        print(score)
     }
     
     func chooseNumber() {
