@@ -87,6 +87,6 @@ class GameScene: SKScene {
     }
     
     func saveData() {
-            defaults.set(tempScore, forKey: "data")
+        defaults.set(tempScore, forKey: "data")
     }
 }

@@ -52,6 +52,7 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
             }
         }
     }
+    
     func createBackground() {
         let stars = SKTexture(imageNamed: "stars")
         let starsBackground = SKSpriteNode(texture: stars)
@@ -80,16 +81,16 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
     
     func makeInitialBricks() {
         //make the base bricks
-            brick = SKSpriteNode(color: .white, size: CGSize(width: frame.maxX - frame.minX, height: 5))
-            brick.position = CGPoint(x: frame.midX, y: frame.minY + 50)
-            brick.name = "brick\(counter)"
-            brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
-            brick.physicsBody?.isDynamic = false
-            brick.physicsBody?.categoryBitMask = brickBitMask
-            brick.physicsBody?.collisionBitMask = brickBitMask
-            bricks.append(brick)
-            addChild(brick)
-            counter += 1
+        brick = SKSpriteNode(color: .white, size: CGSize(width: frame.maxX - frame.minX, height: 5))
+        brick.position = CGPoint(x: frame.midX, y: frame.minY + 50)
+        brick.name = "brick\(counter)"
+        brick.physicsBody = SKPhysicsBody(rectangleOf: brick.size)
+        brick.physicsBody?.isDynamic = false
+        brick.physicsBody?.categoryBitMask = brickBitMask
+        brick.physicsBody?.collisionBitMask = brickBitMask
+        bricks.append(brick)
+        addChild(brick)
+        counter += 1
         //make the random bricks
         for i in 1...9 {
             for _ in 1...(Int.random(in: 1...3)) {
@@ -160,7 +161,6 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         lastTouchPosition = nil
     }
     
-    //blah
     override func update(_ currentTime: TimeInterval) {
         #if targetEnvironment(simulator)
         if let currentTouch = lastTouchPosition {
@@ -326,5 +326,3 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
         }
     }
 }
-//end
-
