@@ -208,8 +208,8 @@ class SceneTwo: SKScene, SKPhysicsContactDelegate {
                         bricks.last?.removeFromParent()
                         bricks.removeLast()
                         movingBrick = SKSpriteNode(color: .blue, size: CGSize(width: 50, height: 5))
-                        let direction = Bool.random()
-                        if direction == true {
+                        let directionRight = Bool.random()
+                        if directionRight {
                             movingBrick.position = CGPoint(x: frame.minX, y: movingBrickY! + CGFloat(40))
                         }
                         else {
