@@ -84,6 +84,7 @@ class GameScene: SKScene {
         self.view!.presentScene(sceneTwo, transition: SKTransition.fade(withDuration: 0.15))
         playButton.alpha = 0
         highScoreLabel.alpha = 0
+        sceneTwo.scoreLabel.alpha = 1
         sceneTwo.oneTime = 1
     }
     
