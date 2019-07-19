@@ -27,7 +27,6 @@ class GameScene: SKScene {
         makePlayButton()
         makeHighScoreLabel()
         if let saveData = defaults.object(forKey: "data") as? Int {
-            print(saveData)
             lastHighScore = saveData
         }
         tempScore = score
@@ -35,7 +34,6 @@ class GameScene: SKScene {
             lastHighScore = tempScore
             self.saveData()
         }
-        print(lastHighScore)
         highScoreLabel.text = "High Score: " + String(lastHighScore)
     }
     
