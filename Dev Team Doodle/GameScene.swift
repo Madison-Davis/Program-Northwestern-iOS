@@ -15,6 +15,7 @@ class GameScene: SKScene {
     let label = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 60))
     let playButton = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
     let highScoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 30))
+    let defaults = UserDefaults.standard
     var numberOfTimesReset = 0
     var tempScore = 0
     
@@ -23,13 +24,16 @@ class GameScene: SKScene {
         makeTitleLabe()
         makePlayButton()
         makeHighScoreLabel()
+        if let saveData = defaults.object(forKey: "data") as? Int {
+            print(saveData)
+            lastHighScore = saveData
+        }
         tempScore = score
         if tempScore > lastHighScore {
-            print(lastHighScore)
             lastHighScore = tempScore
-            print(tempScore)
-            print(lastHighScore)
+            self.saveData()
         }
+        print(lastHighScore)
         highScoreLabel.text = "High Score: " + String(lastHighScore)
     }
     
@@ -79,5 +83,9 @@ class GameScene: SKScene {
         playButton.alpha = 0
         highScoreLabel.alpha = 0
         sceneTwo.oneTime = 1
+    }
+    
+    func saveData() {
+            defaults.set(tempScore, forKey: "data")
     }
 }
